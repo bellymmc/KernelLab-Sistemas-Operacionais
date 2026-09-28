@@ -1,0 +1,16 @@
+test_authorized_device (test_devices.DeviceTests.test_authorized_device) ... ok
+test_mutex_serializes_disk (test_devices.DeviceTests.test_mutex_serializes_disk) ... ok
+test_unauthorized_device (test_devices.DeviceTests.test_unauthorized_device) ... ok
+test_fifo (test_memory.MemoryTests.test_fifo) ... ok
+test_lru (test_memory.MemoryTests.test_lru) ... ok
+test_optimal (test_memory.MemoryTests.test_optimal) ... ok
+test_optimal_is_reference_best (test_memory.MemoryTests.test_optimal_is_reference_best) ... ok
+test_fcfs_known_metrics (test_schedulers.SchedulerTests.test_fcfs_known_metrics) ... ok
+test_priority_order (test_schedulers.SchedulerTests.test_priority_order) ... ok
+test_round_robin_quantum_three (test_schedulers.SchedulerTests.test_round_robin_quantum_three) ... ok
+test_sjf_order (test_schedulers.SchedulerTests.test_sjf_order) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 0.093s
+
+OK

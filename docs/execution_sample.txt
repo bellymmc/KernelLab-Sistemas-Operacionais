@@ -1,0 +1,179 @@
+
+=== KERNELLAB: ESCALONAMENTO DE CPU ===
+
+FCFS
+Ordem: P1 -> P2 -> P3 -> P4 -> P5 -> P6
+Gantt: P1 [0-8] | P2 [8-12] | P3 [12-21] | P4 [21-23] | P5 [23-35] | P6 [35-41]
++-----+--------+---------+----------+
+| PID | Espera | Retorno | Resposta |
++-----+--------+---------+----------+
+| P1  | 0      | 8       | 0        |
+| P2  | 7      | 11      | 7        |
+| P3  | 10     | 19      | 10       |
+| P4  | 18     | 20      | 18       |
+| P5  | 18     | 30      | 18       |
+| P6  | 29     | 35      | 29       |
++-----+--------+---------+----------+
+Médias: espera=13.67, retorno=20.50, resposta=13.67; trocas de contexto=5
+Indicador de atraso excessivo: P6
+
+SJF
+Ordem: P1 -> P4 -> P2 -> P6 -> P3 -> P5
+Gantt: P1 [0-8] | P4 [8-10] | P2 [10-14] | P6 [14-20] | P3 [20-29] | P5 [29-41]
++-----+--------+---------+----------+
+| PID | Espera | Retorno | Resposta |
++-----+--------+---------+----------+
+| P1  | 0      | 8       | 0        |
+| P2  | 9      | 13      | 9        |
+| P3  | 18     | 27      | 18       |
+| P4  | 5      | 7       | 5        |
+| P5  | 24     | 36      | 24       |
+| P6  | 8      | 14      | 8        |
++-----+--------+---------+----------+
+Médias: espera=10.67, retorno=17.50, resposta=10.67; trocas de contexto=5
+Indicador de atraso excessivo: P3, P5
+
+Round Robin
+Ordem: P1 -> P2 -> P3 -> P4 -> P1 -> P5 -> P6 -> P2 -> P3 -> P1 -> P5 -> P6 -> P3 -> P5 -> P5
+Gantt: P1 [0-3] | P2 [3-6] | P3 [6-9] | P4 [9-11] | P1 [11-14] | P5 [14-17] | P6 [17-20] | P2 [20-21] | P3 [21-24] | P1 [24-26] | P5 [26-29] | P6 [29-32] | P3 [32-35] | P5 [35-38] | P5 [38-41]
++-----+--------+---------+----------+
+| PID | Espera | Retorno | Resposta |
++-----+--------+---------+----------+
+| P1  | 18     | 26      | 0        |
+| P2  | 16     | 20      | 2        |
+| P3  | 24     | 33      | 4        |
+| P4  | 6      | 8       | 6        |
+| P5  | 24     | 36      | 9        |
+| P6  | 20     | 26      | 11       |
++-----+--------+---------+----------+
+Médias: espera=18.00, retorno=24.83, resposta=5.33; trocas de contexto=13
+Indicador de atraso excessivo: nenhum
+
+Prioridade
+Ordem: P1 -> P4 -> P2 -> P6 -> P3 -> P5
+Gantt: P1 [0-8] | P4 [8-10] | P2 [10-14] | P6 [14-20] | P3 [20-29] | P5 [29-41]
++-----+--------+---------+----------+
+| PID | Espera | Retorno | Resposta |
++-----+--------+---------+----------+
+| P1  | 0      | 8       | 0        |
+| P2  | 9      | 13      | 9        |
+| P3  | 18     | 27      | 18       |
+| P4  | 5      | 7       | 5        |
+| P5  | 24     | 36      | 24       |
+| P6  | 8      | 14      | 8        |
++-----+--------+---------+----------+
+Médias: espera=10.67, retorno=17.50, resposta=10.67; trocas de contexto=5
+Indicador de atraso excessivo: P3, P5
+
+=== KERNELLAB: MEMÓRIA ===
+
+FIFO - hits=5, faults=12, taxa=70.59%
++----+-----+---------+-----------+
+| #  | Ref | Frames  | Resultado |
++----+-----+---------+-----------+
+| 1  | 1   | 1 - - - | FAULT     |
+| 2  | 2   | 1 2 - - | FAULT     |
+| 3  | 3   | 1 2 3 - | FAULT     |
+| 4  | 4   | 1 2 3 4 | FAULT     |
+| 5  | 1   | 1 2 3 4 | HIT       |
+| 6  | 2   | 1 2 3 4 | HIT       |
+| 7  | 5   | 5 2 3 4 | FAULT     |
+| 8  | 1   | 5 1 3 4 | FAULT     |
+| 9  | 2   | 5 1 2 4 | FAULT     |
+| 10 | 3   | 5 1 2 3 | FAULT     |
+| 11 | 4   | 4 1 2 3 | FAULT     |
+| 12 | 5   | 4 5 2 3 | FAULT     |
+| 13 | 2   | 4 5 2 3 | HIT       |
+| 14 | 1   | 4 5 1 3 | FAULT     |
+| 15 | 5   | 4 5 1 3 | HIT       |
+| 16 | 3   | 4 5 1 3 | HIT       |
+| 17 | 2   | 4 5 1 2 | FAULT     |
++----+-----+---------+-----------+
+
+LRU - hits=7, faults=10, taxa=58.82%
++----+-----+---------+-----------+
+| #  | Ref | Frames  | Resultado |
++----+-----+---------+-----------+
+| 1  | 1   | 1 - - - | FAULT     |
+| 2  | 2   | 1 2 - - | FAULT     |
+| 3  | 3   | 1 2 3 - | FAULT     |
+| 4  | 4   | 1 2 3 4 | FAULT     |
+| 5  | 1   | 1 2 3 4 | HIT       |
+| 6  | 2   | 1 2 3 4 | HIT       |
+| 7  | 5   | 1 2 5 4 | FAULT     |
+| 8  | 1   | 1 2 5 4 | HIT       |
+| 9  | 2   | 1 2 5 4 | HIT       |
+| 10 | 3   | 1 2 5 3 | FAULT     |
+| 11 | 4   | 1 2 4 3 | FAULT     |
+| 12 | 5   | 5 2 4 3 | FAULT     |
+| 13 | 2   | 5 2 4 3 | HIT       |
+| 14 | 1   | 5 2 4 1 | FAULT     |
+| 15 | 5   | 5 2 4 1 | HIT       |
+| 16 | 3   | 5 2 3 1 | FAULT     |
+| 17 | 2   | 5 2 3 1 | HIT       |
++----+-----+---------+-----------+
+
+Optimal - hits=10, faults=7, taxa=41.18%
++----+-----+---------+-----------+
+| #  | Ref | Frames  | Resultado |
++----+-----+---------+-----------+
+| 1  | 1   | 1 - - - | FAULT     |
+| 2  | 2   | 1 2 - - | FAULT     |
+| 3  | 3   | 1 2 3 - | FAULT     |
+| 4  | 4   | 1 2 3 4 | FAULT     |
+| 5  | 1   | 1 2 3 4 | HIT       |
+| 6  | 2   | 1 2 3 4 | HIT       |
+| 7  | 5   | 1 2 3 5 | FAULT     |
+| 8  | 1   | 1 2 3 5 | HIT       |
+| 9  | 2   | 1 2 3 5 | HIT       |
+| 10 | 3   | 1 2 3 5 | HIT       |
+| 11 | 4   | 1 2 4 5 | FAULT     |
+| 12 | 5   | 1 2 4 5 | HIT       |
+| 13 | 2   | 1 2 4 5 | HIT       |
+| 14 | 1   | 1 2 4 5 | HIT       |
+| 15 | 5   | 1 2 4 5 | HIT       |
+| 16 | 3   | 3 2 4 5 | FAULT     |
+| 17 | 2   | 3 2 4 5 | HIT       |
++----+-----+---------+-----------+
+
+=== KERNELLAB: CONTROLE DE ACESSO ===
++-----+-------------+------------------------+
+| PID | Dispositivo | Permissões (L/G/X/U/E) |
++-----+-------------+------------------------+
+| P1  | rede        | LGU                    |
+| P1  | logs        | GU                     |
+| P2  | rede        | LGU                    |
+| P2  | logs        | GU                     |
+| P3  | disco       | LGU                    |
+| P3  | logs        | LGU                    |
+| P4  | rede        | GUE                    |
+| P4  | audio       | UE                     |
+| P4  | logs        | GU                     |
+| P5  | disco       | LGUE                   |
+| P5  | logs        | GU                     |
+| P6  | disco       | LGXU                   |
+| P6  | rede        | LGU                    |
+| P6  | logs        | GU                     |
++-----+-------------+------------------------+
+
+Simulação concorrente no disco com mutex:
+ - FILA: P3 solicitou disco.
+ - ENTROU: P3 está usando disco.
+ - FILA: P5 solicitou disco.
+ - FILA: P6 solicitou disco.
+ - SAIU: P3 liberou disco.
+ - ENTROU: P5 está usando disco.
+ - SAIU: P5 liberou disco.
+ - ENTROU: P6 está usando disco.
+ - SAIU: P6 liberou disco.
+Máximo de processos simultâneos dentro da seção crítica do disco: 1
+
+=== ANÁLISE FINAL ===
+- Menor espera média: SJF e Prioridade (empate neste conjunto de dados).
+- Melhor resposta média: Round Robin, pois distribui a CPU em fatias curtas.
+- P4 (alarme): SJF/Prioridade iniciam em t=8; RR inicia em t=9; FCFS apenas em t=21.
+- Maior risco teórico de starvation: Prioridade (P5 é o de menor prioridade); SJF também pode postergar jobs longos.
+- Maior justiça temporal: Round Robin, ao garantir oportunidades periódicas de CPU.
+- Recomendação para MedControl: política híbrida/preemptiva por prioridade para eventos críticos, com Round Robin entre processos de mesma classe e aging para reduzir starvation.
+
+Gráficos exportados para: docs/generated
